@@ -19,13 +19,9 @@ public class MainMenuController : MonoBehaviour
     [SerializeField]
     private DataSO dataSO;
 
-    private int numberOfPlayers = 7;
-    private string[] playerNames = { "Matheus",  "Roberto", "Jonas",  "Joana",
-                                     "Cláudio",  "Raimundo","Pedro",  "Bruno",
-                                     "Ana",      "Vanessa", "Jéssica","Manuela",
-                                     "Guilherme","Mariana", "Marta",  "Rebéca"};
+    private int numberOfPlayers = 6;
     private int numberOfWerewolves = 2;
-    private int numberOfVillagers = 4;
+    private int numberOfVillagers = 3;
     private int numberOfSpecial = 1;
     private List<PlayerRoles> playerRoles;
     private int playersSorted = 0;
@@ -67,7 +63,7 @@ public class MainMenuController : MonoBehaviour
     {
 
         int randomValue = Random.Range(0, playerRoles.Count);
-        sortingPlayersName.text = "O nome do jogador " + (playersSorted + 1).ToString() + " é : " + playerNames[playersSorted];
+        sortingPlayersName.text = "O nome do jogador " + (playersSorted + 1).ToString() + " é : " + dataSO.playerNames[playersSorted];
         playerImage.sprite = playerImages[playersSorted];
         sortingPlayersRole.text = "Seu papel é de: " + playerRoles[randomValue].ToString();
         dataSO.playerRoles.Add(playerRoles[randomValue]);
@@ -113,5 +109,10 @@ public class MainMenuController : MonoBehaviour
     public void StartGame()
     {
             SceneManager.LoadScene(1);
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
     }
 }

@@ -105,7 +105,7 @@ public class GameManager : MonoBehaviour
 
     private void WerewolfTurn()
     {
-        animator.SetBool("PlayDay", true);
+        animator.SetBool("PlayDay", false);
         animator.SetBool("PlayNight", true);
         if (!CheckEndGame())
         {
@@ -391,6 +391,12 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene(0);
     }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
+
     private void SceneTest()
     {
         if (dataSO.playerRoles == null)
