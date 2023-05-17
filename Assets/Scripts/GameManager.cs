@@ -5,7 +5,6 @@ using Enums;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using UnityEditor.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -152,6 +151,7 @@ public class GameManager : MonoBehaviour
     
     private void GettingIntoToDawn()
     {
+        canClickPlayers = false;
         ClearPlayersUI();
         mainText.text = "O turno dos lobisomens terminou.\r\nA manhã se aproxima, com isto o cheiro da morte também...";
         nextButton.onClick.RemoveAllListeners();
