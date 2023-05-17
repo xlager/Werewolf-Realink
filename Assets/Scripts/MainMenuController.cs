@@ -63,7 +63,7 @@ public class MainMenuController : MonoBehaviour
     {
 
         int randomValue = Random.Range(0, playerRoles.Count);
-        sortingPlayersName.text = "O nome do jogador " + (playersSorted + 1).ToString() + " é : " + dataSO.playerNames[playersSorted];
+        sortingPlayersName.text = "O nome do jogador " + (playersSorted + 1).ToString() + " é:\r\n" + dataSO.playerNames[playersSorted];
         playerImage.sprite = playerImages[playersSorted];
         sortingPlayersRole.text = "Seu papel é de: " + playerRoles[randomValue].ToString();
         dataSO.playerRoles.Add(playerRoles[randomValue]);

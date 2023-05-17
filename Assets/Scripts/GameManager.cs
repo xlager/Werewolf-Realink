@@ -5,7 +5,7 @@ using Enums;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-
+using UnityEditor.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -29,6 +29,8 @@ public class GameManager : MonoBehaviour
     public Image lockScreen;
     public TextMeshProUGUI endGameText;
     public Animator animator;
+    public List<Sprite> turnIcons;
+    public Image turnIcon;
     private PlayerRoles turnOf;
     private bool canClickPlayers = false;
     private Character selectedPlayerToBeKilled;
@@ -38,8 +40,7 @@ public class GameManager : MonoBehaviour
     private int numberOfAliveWerewolves;
     private int villagerTurnCounter;
     private List<Character> aliveVilagersList;
-    public List<Sprite> turnIcons;
-    public Image turnIcon;
+
 
     // Start is called before the first frame update
     void Start()
@@ -61,10 +62,12 @@ public class GameManager : MonoBehaviour
     private void SetStage()
     {
         //Configure buttons
+        
         backToMenuButton.onClick.AddListener(() => ReturnToMenuButton());
         jumpVoteButton.onClick = new Button.ButtonClickedEvent();
         jumpVoteButton.onClick.AddListener(() => Voted());
         jumpVoteButton.onClick.AddListener(() => StartVoting(true));
+
 
         timeOfDay = TimeOfDay.Night;
         timeOfDayText.text = "Anoitecer";
@@ -137,9 +140,9 @@ public class GameManager : MonoBehaviour
     {
         ClearPlayersUI();
         if (selectedBySeer.role == PlayerRoles.Werewolf)
-            mainText.text = $"Turno do Vidente.\r\nO jogador {selectedBySeer.characterName} é um lobisomem;";
+            mainText.text = $"Turno do Vidente.\r\nO jogador {selectedBySeer.characterName} é um lobisomem.";
         else
-            mainText.text = $"Turno do Vidente.\r\nA identidade do jogador {selectedBySeer.characterName} não é lobisomem;";
+            mainText.text = $"Turno do Vidente.\r\nA identidade do jogador {selectedBySeer.characterName} não é lobisomem.";
 
         nextButton.onClick.RemoveAllListeners();
         nextButton.onClick = new Button.ButtonClickedEvent();
