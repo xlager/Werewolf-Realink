@@ -28,4 +28,20 @@ public class DataSO : ScriptableObject
         else
             playerRoles = new List<PlayerRoles>();
     }
+
+    public string TranslateRole(PlayerRoles role)
+    {
+        
+        switch (role)
+        {
+            case PlayerRoles.Villager:
+                return "Aldeão";
+            case PlayerRoles.Werewolf:
+                return "Lobisomem";
+            case PlayerRoles.Seer:
+                return "Vidente";
+            default:
+                return "Aldeão";
+        }
+    }
 };

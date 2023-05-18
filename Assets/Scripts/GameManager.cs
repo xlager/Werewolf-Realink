@@ -166,7 +166,7 @@ public class GameManager : MonoBehaviour
         turnIcon.gameObject.SetActive(false);
         timeOfDayText.text = "Anoitecer - Revelação do Assassinato";
         DoTheKill(selectedPlayerToBeKilled);
-        mainText.text = $"O jogador {selectedPlayerToBeKilled.characterName} foi assassinado!\r\nClique em próximo para continuar para o turno de votação.";
+        mainText.text = $"O jogador {selectedPlayerToBeKilled.characterName} foi assassinado!\r\nClique em próximo para continuar para o próximo turno.";
         nextButton.onClick.RemoveAllListeners();
         nextButton.onClick = new Button.ButtonClickedEvent();
         nextButton.onClick.AddListener(() => VillagersTurn());
@@ -249,6 +249,8 @@ public class GameManager : MonoBehaviour
     {
         VotationResult Result = VotationResult.Zero;
         selectedByVillager = Players[0];
+        if (selectedByVillager.votationValue > 0)
+            Result = VotationResult.Win;
         for (int i = 1; i < dataSO.numberOfPlayers; i++)
         {
             if ((selectedByVillager.votationValue < Players[i].votationValue) && !Players[i].dead)
@@ -419,6 +421,7 @@ public class GameManager : MonoBehaviour
         Application.Quit();
     }
 
+    //Função de teste para inicialização direto da cena de jogo
     private void SceneTest()
     {
         if (dataSO.playerRoles == null)
