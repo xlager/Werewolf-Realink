@@ -5,6 +5,7 @@ using Enums;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Linq;
 
 public class GameManager : MonoBehaviour
 {
@@ -156,13 +157,16 @@ public class GameManager : MonoBehaviour
         mainText.text = "A manhã se aproxima, com isto o cheiro da morte também...";
         nextButton.onClick.RemoveAllListeners();
         nextButton.onClick = new Button.ButtonClickedEvent();
-        nextButton.onClick.AddListener(() => DawnTurn());
+        nextButton.onClick.AddListener(() => ShowDeath());
     }
 
-    private void DawnTurn()
+    private void ShowDeath()
     {
         ClearPlayersUI();
+        turnIcon.gameObject.SetActive(false);
+        timeOfDayText.text = "Anoitecer - Revelação do Assassinato";
         DoTheKill(selectedPlayerToBeKilled);
+        mainText.text = $"O jogador {selectedPlayerToBeKilled.characterName} foi assassinado!\r\nClique em próximo para continuar para o turno de votação.";
         nextButton.onClick.RemoveAllListeners();
         nextButton.onClick = new Button.ButtonClickedEvent();
         nextButton.onClick.AddListener(() => VillagersTurn());
@@ -174,6 +178,7 @@ public class GameManager : MonoBehaviour
 
         if (!CheckEndGame())
         {
+            turnIcon.gameObject.SetActive(true);
             ChangeTimeOfDay(TimeOfDay.Dawn);
             mainText.text = "Amanheçeu.\r\nApós o assassinato, os aldeões se reúnem para votar em quem expulsar da vila.\r\nPressione próximo para iniciar a votação.";
             ChangeTurns(PlayerRoles.Villager);
@@ -203,7 +208,7 @@ public class GameManager : MonoBehaviour
         else
         {
             canClickPlayers = false;
-            mainText.text = $"Votação.\r\nA votação teve um final, aperte no próximo para ver quem foi expulso da vila";
+            mainText.text = $"A votação teve um final, aperte no próximo para ver quem foi expulso da vila";
             nextButton.interactable = true;
             jumpVoteButton.gameObject.SetActive(false);
             nextButton.onClick.RemoveAllListeners();
@@ -223,16 +228,15 @@ public class GameManager : MonoBehaviour
         {
             case VotationResult.Win:
                 {
-                    mainText.text = $"Fim da Votação.\r\nO jogador {selectedByVillager.characterName} foi expulso da vila";
+                    mainText.text = $"O jogador {selectedByVillager.characterName} foi expulso da vila.\r\nPressione próximo para avançar para o turno dos lobisomens";
                     DoTheKill(selectedByVillager);
-                    mainText.text = mainText.text + ("\n\rPressione próximo para avançar para o turno dos lobisomens");
                 }
                 break;
             case VotationResult.Tie:
-                mainText.text = $"Fim da Votação.\r\nHouve mais do que um jogador com a mesma quantidade de votos, logo, ninguém foi expulso da vila";
+                mainText.text = $"Houve mais do que um jogador com a mesma quantidade de votos, logo, ninguém foi expulso da vila";
                 break;
             case VotationResult.Zero:
-                mainText.text = $"Fim da Votação.\r\nOs aldeões optaram por não expulsar ninguém";
+                mainText.text = $"Os aldeões optaram por não expulsar ninguém";
                 break;
         }
         nextButton.onClick.RemoveAllListeners();
@@ -378,14 +382,13 @@ public class GameManager : MonoBehaviour
             animator.SetBool("PlayNight", true);
             timeOfDay = timeDay;
             ChangeTurns(PlayerRoles.Werewolf);
-            mainText.text = "Turno dos Lobisomens.\r\nSelecione qual personagem você(s) deseja assasinar nesta noite clicando sobre sua imagem.\r\nApós, clicar no botão próximo para avançar o turno";
+            mainText.text = "Selecione qual personagem você(s) deseja(am) assasinar nesta noite clicando sobre sua imagem.\r\nApós, clicar no botão próximo para avançar o turno";
         }
         else
         {
             animator.SetBool("PlayNight", false);
             animator.SetBool("PlayDay", true);
             timeOfDay = TimeOfDay.Dawn;
-            mainText.text = $"Amanheçeu.\r\nO jogador {selectedPlayerToBeKilled.characterName} foi assassinado!\r\nClique em próximo para continuar para o turno de votação.";
         }
     }
     private void ChangeTurns(PlayerRoles playerTurn)
@@ -403,7 +406,8 @@ public class GameManager : MonoBehaviour
                 break;
         }
         turnOf = playerTurn;
-        turnIcon.sprite = turnIcons[(int)turnOf];
+        if ((int)turnOf < turnIcons.Count   )
+            turnIcon.sprite = turnIcons[(int)turnOf];
     }
     private void ReturnToMenuButton()
     {
