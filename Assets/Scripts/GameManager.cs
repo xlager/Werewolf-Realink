@@ -69,7 +69,7 @@ public class GameManager : MonoBehaviour
 
 
         timeOfDay = TimeOfDay.Night;
-        timeOfDayText.text = "Anoitecer";
+        
         mainText.text = "O jogo começou.\r\nA partir de agora, os lobisomens tomarão a primeira ação, escolher quem eles matarão.\r\nJogador Lobisomem, apertar no próximo.";
         ChangeTurns(PlayerRoles.Werewolf);
         
@@ -101,14 +101,14 @@ public class GameManager : MonoBehaviour
             }
             count++;
         };
-        WerewolfTurn();
+        nextButton.onClick.RemoveAllListeners();
+        nextButton.onClick = new Button.ButtonClickedEvent();
+        nextButton.onClick.AddListener(() => WerewolfTurn());
     }
-
 
     private void WerewolfTurn()
     {
-        animator.SetBool("PlayDay", false);
-        animator.SetBool("PlayNight", true);
+
         if (!CheckEndGame())
         {
             canClickPlayers = true;
@@ -129,7 +129,7 @@ public class GameManager : MonoBehaviour
         canClickPlayers = true;
         ClearPlayersUI();
         ChangeTurns(PlayerRoles.Seer);
-        mainText.text = "Turno do Vidente.\r\nSelecione qual personagem você deseja descobrir a identidade.";
+        mainText.text = "Selecione qual personagem você deseja descobrir a identidade.";
         nextButton.interactable = false;
         nextButton.onClick.RemoveAllListeners();
         nextButton.onClick = new Button.ButtonClickedEvent();
@@ -139,9 +139,9 @@ public class GameManager : MonoBehaviour
     {
         ClearPlayersUI();
         if (selectedBySeer.role == PlayerRoles.Werewolf)
-            mainText.text = $"Turno do Vidente.\r\nO jogador {selectedBySeer.characterName} é um lobisomem.";
+            mainText.text = $"O jogador {selectedBySeer.characterName} é um lobisomem.";
         else
-            mainText.text = $"Turno do Vidente.\r\nA identidade do jogador {selectedBySeer.characterName} não é lobisomem.";
+            mainText.text = $"A identidade do jogador {selectedBySeer.characterName} não é lobisomem.";
 
         nextButton.onClick.RemoveAllListeners();
         nextButton.onClick = new Button.ButtonClickedEvent();
@@ -153,7 +153,7 @@ public class GameManager : MonoBehaviour
     {
         canClickPlayers = false;
         ClearPlayersUI();
-        mainText.text = "O turno dos lobisomens terminou.\r\nA manhã se aproxima, com isto o cheiro da morte também...";
+        mainText.text = "A manhã se aproxima, com isto o cheiro da morte também...";
         nextButton.onClick.RemoveAllListeners();
         nextButton.onClick = new Button.ButtonClickedEvent();
         nextButton.onClick.AddListener(() => DawnTurn());
@@ -161,10 +161,7 @@ public class GameManager : MonoBehaviour
 
     private void DawnTurn()
     {
-        animator.SetBool("PlayNight", false);
-        animator.SetBool("PlayDay", true);
         ClearPlayersUI();
-        ChangeTimeOfDay(TimeOfDay.Dawn);
         DoTheKill(selectedPlayerToBeKilled);
         nextButton.onClick.RemoveAllListeners();
         nextButton.onClick = new Button.ButtonClickedEvent();
@@ -174,9 +171,12 @@ public class GameManager : MonoBehaviour
     private void VillagersTurn()
     {
         ClearPlayersUI();
+
         if (!CheckEndGame())
         {
+            ChangeTimeOfDay(TimeOfDay.Dawn);
             mainText.text = "Amanheçeu.\r\nApós o assassinato, os aldeões se reúnem para votar em quem expulsar da vila.\r\nPressione próximo para iniciar a votação.";
+            ChangeTurns(PlayerRoles.Villager);
             nextButton.onClick.RemoveAllListeners();
             nextButton.onClick = new Button.ButtonClickedEvent();
             nextButton.onClick.AddListener(() => Voted());
@@ -196,7 +196,6 @@ public class GameManager : MonoBehaviour
         if (villagerTurnCounter < numberOfAlivePlayers)
         {
             canClickPlayers = true;
-            ChangeTurns(PlayerRoles.Villager);
             selectedByVillager = null;
             mainText.text = $"Votação.\r\nO jogador {aliveVilagersList[villagerTurnCounter].characterName} está votando.";
             nextButton.interactable = false;
@@ -334,6 +333,7 @@ public class GameManager : MonoBehaviour
                             selectedByVillager.RemoveVote();
                             selectedByVillager.UnSelect();
                             selectedByVillager = null;
+                            nextButton.interactable = false;
 
                         }
                     }
@@ -343,6 +343,7 @@ public class GameManager : MonoBehaviour
                         if (selectedPlayerToBeKilled != null && selectedPlayerToBeKilled != player)
                         {
                             selectedPlayerToBeKilled.UnSelect();
+                            nextButton.interactable = false;
                         }
                         if ((player.role != PlayerRoles.Werewolf) && (!player.dead))
                         {
@@ -373,20 +374,34 @@ public class GameManager : MonoBehaviour
     {
         if (timeDay == TimeOfDay.Night)
         {
+            animator.SetBool("PlayDay", false);
+            animator.SetBool("PlayNight", true);
             timeOfDay = timeDay;
             ChangeTurns(PlayerRoles.Werewolf);
-            timeOfDayText.text = "Anoitecer";
             mainText.text = "Turno dos Lobisomens.\r\nSelecione qual personagem você(s) deseja assasinar nesta noite clicando sobre sua imagem.\r\nApós, clicar no botão próximo para avançar o turno";
         }
         else
         {
+            animator.SetBool("PlayNight", false);
+            animator.SetBool("PlayDay", true);
             timeOfDay = TimeOfDay.Dawn;
-            timeOfDayText.text = "Amanheçer";
             mainText.text = $"Amanheçeu.\r\nO jogador {selectedPlayerToBeKilled.characterName} foi assassinado!\r\nClique em próximo para continuar para o turno de votação.";
         }
     }
     private void ChangeTurns(PlayerRoles playerTurn)
     {
+        switch (playerTurn)
+        {
+            case PlayerRoles.Villager:
+                timeOfDayText.text = "Amanhecer - Turno dos Aldeões";
+                break;
+            case PlayerRoles.Werewolf:
+                timeOfDayText.text = "Anoitecer - Turno dos Lobisomens";
+                break;
+            case PlayerRoles.Seer:
+                timeOfDayText.text = "Anoitecer - Turno do Vidente";
+                break;
+        }
         turnOf = playerTurn;
         turnIcon.sprite = turnIcons[(int)turnOf];
     }
