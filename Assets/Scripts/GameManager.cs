@@ -71,7 +71,7 @@ public class GameManager : MonoBehaviour
 
         timeOfDay = TimeOfDay.Night;
         
-        mainText.text = "O jogo começou.\r\nA partir de agora, os lobisomens tomarão a primeira ação, escolher quem eles matarão.\r\nJogador Lobisomem, apertar no próximo.";
+        mainText.text = "O jogo começou.\r\nA partir de agora os lobisomens tomarão a primeira ação, escolher quem eles matarão.\r\nJogador Lobisomem, apertar no próximo.";
         ChangeTurns(PlayerRoles.Werewolf);
         
         int count = 0;
@@ -233,10 +233,10 @@ public class GameManager : MonoBehaviour
                 }
                 break;
             case VotationResult.Tie:
-                mainText.text = $"Houve mais do que um jogador com a mesma quantidade de votos, logo, ninguém foi expulso da vila";
+                mainText.text = $"Houve mais do que um jogador com a mesma quantidade de votos, logo, ninguém foi expulso da vila\r\nPressione próximo para avançar para o turno dos lobisomens";
                 break;
             case VotationResult.Zero:
-                mainText.text = $"Os aldeões optaram por não expulsar ninguém";
+                mainText.text = $"Os aldeões optaram por não expulsar ninguém\r\nPressione próximo para avançar para o turno dos lobisomens";
                 break;
         }
         nextButton.onClick.RemoveAllListeners();

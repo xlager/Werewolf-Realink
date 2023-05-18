@@ -1118,12 +1118,14 @@ MonoBehaviour:
       m_Calls: []
   m_text: "Regras\n\nAp\xF3s a sele\xE7\xE3o do n\xFAmero de jogadores, seus pap\xE9is
     s\xE3o distribu\xEDdos de forma aleat\xF3ria entre 3 tipos: Alde\xE3o, Lobisomem
-    e Vidente\n\nQuando o o jogo come\xE7a \xE9 dividido em 2 partes.\n 1. Anoitecer\r\n   
-    1. Lobisomens decidem em conjunto qual jogador ser\xE1 eliminado na rodada\r\n   
-    2. Vidente analisa a identidade de um jogador a sua escolha e confirma se o mesmo
-    \xE9 um lobisomen ou n\xE3o\r\n    3. O jogador que foi eliminado \xE9 revelado
-    a todos os jogadores\r\n 2. Amanhecer\r\n    1. Todos jogadores votam para decidir
-    outro jogador para ser eliminado"
+    e Vidente\n\nJogo\nQuando o o jogo come\xE7a \xE9 dividido em 2 partes.\n 1.
+    Anoitecer\r\n    1. Lobisomens decidem em conjunto qual jogador ser\xE1 eliminado
+    na rodada\r\n    2. Vidente analisa a identidade de um jogador a sua escolha
+    e confirma se o mesmo \xE9 um lobisomen ou n\xE3o\r\n    3. O jogador que foi
+    eliminado \xE9 revelado a todos os jogadores\r\n 2. Amanhecer\r\n    1. Todos
+    jogadores votam para decidir outro jogador para ser eliminado\n\nCondi\xE7\xE3o
+    de vit\xF3ria\nLobisomens - Ter a mesma quantidade de lobisomens que de alde\xF5es\nAlde\xF5es
+    - Eliminar todos os lobisomens\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
